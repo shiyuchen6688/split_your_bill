@@ -3,16 +3,16 @@ const getAllBills = (req, res) => {
 }
 
 const addNewBill = (req, res) => {
-    res.send("all bills recorded");
+    res.json(req.body);
 }
 const getOneBill = (req, res) => {
-    res.send("all bills recorded");
+    res.json({ "id": req.param.id });
 }
 const updateBill = (req, res) => {
-    res.send("all bills recorded");
+    res.send("update one bill");
 }
 const deleteBill = (req, res) => {
-    res.send("all bills recorded");
+    res.send("delete bill");
 }
 
 
