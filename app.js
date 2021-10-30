@@ -3,6 +3,8 @@ const express = require("express")
 const app = express()
 const path = require("path")
 const billRouter = require("./routers/bills")
+const notFound = require("./middlewares/not-found")
+const errorHandler = require("./middlewares/errorHandler")
 require("dotenv").config()
 
 const port = 5000
@@ -17,9 +19,9 @@ app.use(express.json())
 // routes
 app.use("/api/v1/bills", billRouter)
 
-
-app.get("/bills", (req, res) => {
-})
+// handle wrong url
+app.use(notFound)
+app.use(errorHandler)
 
 const start = async () => {
     try {
