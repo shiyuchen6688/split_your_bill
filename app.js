@@ -4,10 +4,10 @@ const app = express()
 const path = require("path")
 const billRouter = require("./routers/bills")
 const notFound = require("./middlewares/not-found")
-const errorHandler = require("./middlewares/errorHandler")
+const errorHandler = require("./middlewares/error-Handler")
 require("dotenv").config()
 
-const port = 5000
+const port = process.env.PORT || 5000
 
 
 // middlewares

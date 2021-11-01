@@ -1,5 +1,6 @@
 const Bill = require("../models/bills")
 const asyncWrapper = require("../middlewares/async")
+const { createCustomeError } = require("../errors/custome-error.js")
 
 
 // invoking async wrapper
@@ -20,16 +21,13 @@ const addNewBill = asyncWrapper(async (req, res) => {
     });
 })
 
-const getOneBill = asyncWrapper(async (req, res) => {
+const getOneBill = asyncWrapper(async (req, res, next) => {
     const { id: billID } = req.params;
     const bill = await Bill.findOne({ _id: billID });
     if (!bill) {
         // return is just for js to known that it need to exit the function
         // so that it does not send the second response
-        return reres.status(404).json({
-            "success": false,
-            "error": `Cannot find any bill with the provided id ${billID}`
-        })
+        return next(createCustomeError(`Cannot find any bill with the provided id ${billID}`, 404))
     }
     res.status(200).json({
         "success": true,
@@ -41,10 +39,7 @@ const deleteBill = asyncWrapper(async (req, res) => {
     const { id: billID } = req.params;
     const billDeleted = await Bill.findOneAndDelete({ _id: billID })
     if (!billDeleted) {
-        return res.status(404).send({
-            success: false,
-            error: `Cannot ind any bill with the provided id ${billID}`
-        })
+        return next(createCustomeError(`Cannot find any bill with the provided id ${billID}`, 404))
     }
     res.status(200).send({
         success: true,
@@ -60,10 +55,7 @@ const updateBill = asyncWrapper((req, res) => {
             runValidators: true
         })
     if (!updatedBill) {
-        return res.status(404).json({
-            success: false,
-            error: "Cannot found bill with given id"
-        })
+        return next(createCustomeError(`Cannot find any bill with the provided id ${billID}`, 404))
     }
     res.status(200).json({
         success: true,
